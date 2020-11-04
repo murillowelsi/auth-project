@@ -13,6 +13,10 @@ class AuthController {
       return res.status(401).json({error:'Credentials does not match.'})
     }
 
+    if(user.deleted === true) {
+      return res.status(401).json({error:'This account is disabled.'})
+    }
+
     const checkPassword = await bcrypt.compare(password, user.password);
 
     if(!checkPassword) {

@@ -7,9 +7,11 @@ const routes = new Router();
 
 routes.post('/auth', AuthController.store);
 
-routes.post('/users', UserController.store);
-
 routes.use(checkCredentials);
+
 routes.get('/users', UserController.show);
+routes.post('/users', UserController.store);
+routes.put('/users', UserController.update);
+routes.delete('/users', UserController.delete);
 
 export default routes;

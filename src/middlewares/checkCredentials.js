@@ -1,6 +1,7 @@
 import { verify } from "jsonwebtoken";
 import { next } from "sucrase/dist/parser/tokenizer";
 import jwt from "../config/jwt"
+import User from "../models/User";
 
 export default async function(req, res, next) {
   const authHeader = req.headers.authorization
@@ -17,6 +18,12 @@ export default async function(req, res, next) {
     const id = decoded.sub;
 
     req.user = id;
+
+    const user = await User.findById(id);
+
+    if(user.deleted === true) {
+      return res.status(401).json({error:'This account is disabled.'})
+    }
 
     return next();
 
